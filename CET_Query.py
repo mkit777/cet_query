@@ -124,3 +124,6 @@ def gen_zkzh():
 if __name__ == '__main__':
     kh_list = gen_zkzh()
     query(kh_list)
+    while True:
+        input("任意键退出")
+        break

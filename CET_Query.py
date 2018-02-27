@@ -1,4 +1,4 @@
-#!-*-coding:utf-8-*-
+# -*- coding: utf-8 -*-
 import requests
 import os
 HEADERS = {
@@ -12,7 +12,7 @@ def query(kh_list):
         rsp = requests.get('http://www.chsi.com.cn/cet/query',
                            params=param, headers=HEADERS)
         if '无法找到对应的分数' not in rsp.text and '请输入验证码' not in rsp.text:
-            with open(os.path.join(path, param['zkzh']+'.html'), 'wb') as f:
+            with open(os.path.join(path, param['zkzh']+'.html'), 'wb', encoding='utf-8') as f:
                 f.write(rsp.text.encode('utf-8'))
                 print(param['zkzh'], '查询成功')
                 print('结果保存在:', os.path.join(path, param['zkzh']+'.html'))
@@ -125,5 +125,5 @@ if __name__ == '__main__':
     kh_list = gen_zkzh()
     query(kh_list)
     while True:
-        input("任意键退出")
+        input("\n任意键退出")
         break

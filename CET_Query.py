@@ -14,7 +14,7 @@ def query(kh_list):
         print('开始第', count, '次尝试')
         try:
             rsp = requests.get('http://www.chsi.com.cn/cet/query',
-                            params=param, headers=HEADERS)
+                               params=param, headers=HEADERS)
         except requests.exceptions.ConnectionError:
             print('连接超时，请稍后重试')
             return
@@ -31,6 +31,7 @@ def query(kh_list):
             break
         else:
             print('连接超时，请稍后重试')
+            return
     else:
         print('查询失败')
 

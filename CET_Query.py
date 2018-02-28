@@ -8,18 +8,29 @@ HEADERS = {
 
 def query(kh_list):
     path = os.path.dirname(os.path.abspath(__file__))
+    count = 0
     for param in kh_list:
-        rsp = requests.get('http://www.chsi.com.cn/cet/query',
-                           params=param, headers=HEADERS)
-        if '无法找到对应的分数' not in rsp.text and '请输入验证码' not in rsp.text:
-            with open(os.path.join(path, param['zkzh']+'.html'), 'wb', encoding='utf-8') as f:
+        count += 1
+        print('开始第', count, '次尝试')
+        try:
+            rsp = requests.get('http://www.chsi.com.cn/cet/query',
+                            params=param, headers=HEADERS)
+        except requests.exceptions.ConnectionError:
+            print('连接超时，请稍后重试')
+            return
+        if '请输入验证码' in rsp.text:
+            print('您的提交次数过多，请换个IP再尝试。')
+            return
+        elif '无法找到对应的分数' in rsp.text:
+            print(param['zkzh'], '尝试失败')
+        elif '笔试成绩' in rsp.text:
+            with open(os.path.join(path, param['zkzh']+'.html'), 'wb') as f:
                 f.write(rsp.text.encode('utf-8'))
                 print(param['zkzh'], '查询成功')
                 print('结果保存在:', os.path.join(path, param['zkzh']+'.html'))
             break
         else:
-            print(param['zkzh'], '尝试失败')
-
+            print('连接超时，请稍后重试')
     else:
         print('查询失败')
 

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import requests
 import os
+import time
+
 HEADERS = {
     'Referer': 'http://www.chsi.com.cn/cet'
 }
@@ -32,6 +34,7 @@ def query(kh_list):
         else:
             print('连接超时，请稍后重试')
             return
+        time.sleep(1)
     else:
         print('查询失败')
 
@@ -90,7 +93,7 @@ def gen_zkzh():
     默认值为4级
     --------------------------------
     '''
-    fixed.append(check_input(TIP_CET, '1', False))
+    fixed.append(check_input(TIP_CET, '1'))
 
     TIP_KC = '''
     --------------------------------
